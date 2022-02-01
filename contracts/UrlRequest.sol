@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-import "github.com/oraclize/ethereum-api/oraclizeAPI_0.5.sol";
+import "../installed_contracts/oraclizeAPI_0.5.sol";
 
 contract UrlRequest is usingOraclize {
     
@@ -18,12 +18,13 @@ contract UrlRequest is usingOraclize {
         title = _result;
     }
 
-    function request() public payable {
-        if (oraclize_getPrice("URL") > address(this).balance) {
-            emit LogNewProvableQuery("Provable query has not sent.. show me more ETH..");
-            return;
-        }
+    function request() public payable returns (string memory) {
+        // if (oraclize_getPrice("URL") > address(this).balance) {
+        //     emit LogNewProvableQuery("Provable query has not sent.. show me more ETH..");
+        //     return;
+        // }
         emit LogNewProvableQuery("Provable query was sent, standing by for the answer...");
         oraclize_query("URL", "xml(http://rss.cnn.com/rss/cnn_topstories.rss).rss.channel.item.0.title");
+        return title;
     }
 }
