@@ -125,6 +125,10 @@ contract DeedToken is IERC721Full {
         emit Approval(addr_owner, _approved, _tokenId);
     }
 
+    function getApproved(uint256 _tokenId) public view returns (address) {
+        return allowance[_tokenId];
+    }
+
     function setApprovalForAll(address _operator, bool _approved) public {
         operators[msg.sender][_operator] = _approved;
         emit ApprovalForAll(msg.sender, _operator, _approved);
@@ -188,6 +192,12 @@ contract DeedToken is IERC721Full {
         return allValidTokenIds.length;
     }
 
+    function tokenOfOwnerByIndex(address owner, uint256 index) public view returns (uint256) {
+        require(index < balanceOf(owner), "ERC721Enumerable: owner index out of bounds");
+        // TODO: yet to implement
+        return 0;
+    }
+
     function tokenByIndex(uint256 index) public view returns (uint) {
         require(index < totalSupply());
         return allValidTokenIds[index];
@@ -200,6 +210,10 @@ contract DeedToken is IERC721Full {
 
     function symbol() external view returns (string memory) {
         return "EMJ";
+    }
+
+    function tokenURI(uint256 tokenId) external view returns (string memory) {
+        return Strings.toString(tokenId);
     }
 
     function requestTitle(uint256 tokenId) public returns (string memory) {
