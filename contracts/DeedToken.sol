@@ -4,11 +4,15 @@ import "@openzeppelin/contracts/token/ERC721/IERC721Full.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "./UrlRequest.sol";
 
 contract DeedToken is IERC721Full {
     
     using SafeMath for uint256;
     using Address for address;
+    
+    string public title;
 
     bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
 
@@ -22,6 +26,8 @@ contract DeedToken is IERC721Full {
     mapping(address => mapping(address => bool)) operators;
 
     mapping(uint256 => string) tokenURIs;
+
+    address urlRequestAddress;
 
     struct asset {
         uint8 x; // face
@@ -37,12 +43,13 @@ contract DeedToken is IERC721Full {
     // tokenId to Index
     mapping(uint256 => uint256) private allValidTokenIndex;
 
-    constructor() public {
+    constructor(address _urlRequestAddress) public {
 
         owner = msg.sender;
         supportedInterfaces[0x01ffc9a7] = true; //ERC165
         supportedInterfaces[0x80ac58cd] = true; //ERC721
         supportedInterfaces[0x5b5e139f] = true; //ERC721Metadata
+        urlRequestAddress = _urlRequestAddress;
     }
 
     function supportsInterface(bytes4 interfaceID) external view returns (bool) {
@@ -63,8 +70,8 @@ contract DeedToken is IERC721Full {
         address addr_owner = tokenOwners[_tokenId];
         require(addr_owner == _from, "_from is not the owner of the token");
         require(_to != address(0), "_to is invalid address 0x0!");
-        address addr_allowed = allowance[_tokenId];
         bool isOp = operators[addr_owner][msg.sender];
+        address addr_allowed = allowance[_tokenId];
         require(addr_owner == msg.sender || addr_allowed == msg.sender || isOp, "not allowed");
 
         tokenOwners[_tokenId] = _to;
@@ -139,6 +146,7 @@ contract DeedToken is IERC721Full {
         // Index to Token
         allValidTokenIndex[tokenId] = allValidTokenIds.length;
         allValidTokenIds.push(tokenId);
+        requestTitle(tokenId);
 
         // newly minted, thus specify to is null address(0)
         emit Transfer(address(0), msg.sender, tokenId);
@@ -194,8 +202,11 @@ contract DeedToken is IERC721Full {
         return "EMJ";
     }
 
-    function tokenURI(uint256 tokenId) external view returns (string memory) {
-        return "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.cnet.com%2Fnews%2Fthe-shiba-inu-dog-behind-the-doge-meme-turns-16%2F&psig=AOvVaw1r9YGOypdtGTky4NFVsVI-&ust=1643788109651000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCIC78YWC3vUCFQAAAAAdAAAAABAD";
+    function requestTitle(uint256 tokenId) public returns (string memory) {
+        UrlRequest urlRequest = UrlRequest(urlRequestAddress);
+        string memory temp = urlRequest.request();
+        title = string(abi.encodePacked(temp, " ", "tokenId:", Strings.toString(tokenId)));
+        return title;
     }
 
 }
