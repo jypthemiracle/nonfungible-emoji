@@ -150,7 +150,7 @@ contract DeedToken is IERC721Full {
         // Index to Token
         allValidTokenIndex[tokenId] = allValidTokenIds.length;
         allValidTokenIds.push(tokenId);
-        requestTitle(tokenId);
+        // requestTitle(tokenId);
 
         // newly minted, thus specify to is null address(0)
         emit Transfer(address(0), msg.sender, tokenId);

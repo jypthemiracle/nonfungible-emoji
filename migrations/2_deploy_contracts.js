@@ -10,6 +10,7 @@ module.exports = async (deployer) => {
   // deployer.deploy(SimpleStorage);
   // deployer.deploy(TutorialToken);
   // deployer.deploy(ComplexStorage)
+  // deployer.deploy(deedToken);
   await deployer.deploy(urlRequest);
   // https://stackoverflow.com/questions/49785667/truffle-migrate-success-but-contract-address-is-not-displayed
   // You need to return the the deployed contract from the Promise to have the contract object be injected by Truffle.

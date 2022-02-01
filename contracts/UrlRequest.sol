@@ -10,6 +10,7 @@ contract UrlRequest is usingOraclize {
 
     constructor() public {
         // provable_setProof(proofType_Android | proofStorage_IPFS);
+        OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
     }
 
     function __callback(bytes32 _myid, string memory _result) public {
