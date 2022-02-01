@@ -1,11 +1,16 @@
 pragma solidity ^0.5.0;
 
-import "node_modules/@openzeppelin/contracts/token/ERC721/IERC721Full.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Full.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/Address.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
 contract DeedToken is IERC721Full {
     
     using SafeMath for uint256;
     using Address for address;
+
+    bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
 
     address payable public owner;
     mapping(bytes4 => bool) supportedInterfaces;
@@ -44,7 +49,7 @@ contract DeedToken is IERC721Full {
         return supportedInterfaces[interfaceID];
     }
 
-    function balanceOf(address _owner) external view returns (uint256) {
+    function balanceOf(address _owner) public view returns (uint256) {
         return balances[_owner];
     }
 
@@ -54,7 +59,7 @@ contract DeedToken is IERC721Full {
         return addr_owner;
     }
 
-    function transferFrom(address _from, address _to, uint256 _tokenId) public payable {
+    function transferFrom(address _from, address _to, uint256 _tokenId) public {
         address addr_owner = tokenOwners[_tokenId];
         require(addr_owner == _from, "_from is not the owner of the token");
         require(_to != address(0), "_to is invalid address 0x0!");
@@ -80,27 +85,30 @@ contract DeedToken is IERC721Full {
             if (!to.isContract()) {
                 return true;
             }
-            bytes memory returndata = to.functionCall(abi.encodeWithSelector(
+            (bool success, bytes memory returndata) = to.call(abi.encodeWithSelector(
                 IERC721Receiver(to).onERC721Received.selector,
-                _msgSender(),
+                msg.sender,
                 from,
                 tokenId,
                 _data
-            ), "ERC721: transfer to non ERC721Receiver implementer");
+            ));
+            if (!success) {
+                revert("ERC721: transfer to non ERC721Receiver implementer");
+            }
             bytes4 retval = abi.decode(returndata, (bytes4));
             return (retval == _ERC721_RECEIVED);
         }
 
-    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes memory _data) public payable {
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId, bytes memory _data) public {
         require(_checkOnERC721Received(_from, _to, _tokenId, _data), "ERC721 not receivable contract");
         transferFrom(_from, _to, _tokenId);
     }
 
-    function safeTransferFrom(address _from, address _to, uint256 _tokenId) public payable {
+    function safeTransferFrom(address _from, address _to, uint256 _tokenId) public {
         safeTransferFrom(_from, _to, _tokenId, "");
     }
 
-    function approve(address _approved, uint256 _tokenId) public payable {
+    function approve(address _approved, uint256 _tokenId) public {
         address addr_owner = ownerOf(_tokenId);
         bool isOp = operators[addr_owner][msg.sender];
         require(addr_owner == msg.sender || isOp, "not approved by owner");
@@ -110,12 +118,12 @@ contract DeedToken is IERC721Full {
         emit Approval(addr_owner, _approved, _tokenId);
     }
 
-    function setApprovalForAll(address _operator, bool _approved) external {
+    function setApprovalForAll(address _operator, bool _approved) public {
         operators[msg.sender][_operator] = _approved;
         emit ApprovalForAll(msg.sender, _operator, _approved);
     }
 
-    function isApprovedForAll(address _owner, address _operator) external view returns (bool) {
+    function isApprovedForAll(address _owner, address _operator) public view returns (bool) {
         return operators[_owner][_operator];
     }
 
@@ -125,7 +133,7 @@ contract DeedToken is IERC721Full {
         asset memory newAsset = asset(_x, _y, _z);
         uint tokenId = allTokens.push(newAsset) - 1;
         tokenOwners[tokenId] = msg.sender;
-        balance[msg.sender] = balance[msg.sender].add(1);
+        balances[msg.sender] = balances[msg.sender].add(1);
 
         // allValidTokenIds is yet to update, thus able to use as new index w/o decrement by 1
         // Index to Token
@@ -151,7 +159,7 @@ contract DeedToken is IERC721Full {
         // re-indexing
         removeInvalidToken(_tokenId);
 
-        emit Transfer(addr_owner, address(0), tokenId);
+        emit Transfer(addr_owner, address(0), _tokenId);
     }
 
     function removeInvalidToken(uint256 _tokenId) private {
@@ -178,12 +186,16 @@ contract DeedToken is IERC721Full {
     }
 
     // ERC721 Metadata
-    function name() external pure returns (string memory) {
+    function name() external view returns (string memory) {
         return "EMOJI TOKEN";
     }
 
-    function symbol() external pure returns (string memory) {
+    function symbol() external view returns (string memory) {
         return "EMJ";
+    }
+
+    function tokenURI(uint256 tokenId) external view returns (string memory) {
+        return "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.cnet.com%2Fnews%2Fthe-shiba-inu-dog-behind-the-doge-meme-turns-16%2F&psig=AOvVaw1r9YGOypdtGTky4NFVsVI-&ust=1643788109651000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCIC78YWC3vUCFQAAAAAdAAAAABAD";
     }
 
 }
