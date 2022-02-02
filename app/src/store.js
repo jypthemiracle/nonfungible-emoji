@@ -1,4 +1,3 @@
-
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 import { generateContractsInitialState } from '@drizzle/store'
@@ -6,9 +5,6 @@ import { generateContractsInitialState } from '@drizzle/store'
 import drizzleOptions from './drizzleOptions'
 import reducer from './reducer'
 import rootSaga from './rootSaga'
-
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -19,7 +15,7 @@ const initialState = {
 const store = createStore(
     reducer,
     initialState,
-    composeEnhancers (
+    compose (
         applyMiddleware(
             sagaMiddleware
         )
@@ -27,5 +23,7 @@ const store = createStore(
 )
 
 sagaMiddleware.run(rootSaga)
+
+export { store }
 
 export default store

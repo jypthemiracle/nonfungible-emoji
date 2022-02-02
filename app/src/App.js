@@ -4,23 +4,23 @@ import { DrizzleProvider } from "@drizzle/react-plugin";
 import { LoadingContainer } from "@drizzle/react-components";
 import { BrowserRouter as Router } from "react-router-dom";
 
-import options from "./drizzleOptions";
+import drizzleOptions from "./drizzleOptions";
 import Home from "./home";
 
 import "./App.css";
-// import store from './store';
+import store from './store';
 
-const store = {
-    drizzleOptions: options
-}
+// const store = {
+//     drizzleOptions: options
+// }
 
-const drizzleStore = generateStore(store);
+// const drizzleStore = generateStore(store);
 
 class App extends Component {
     
     render() {
         return (
-            <DrizzleProvider options={options} store={drizzleStore}>
+            <DrizzleProvider options={drizzleOptions} store={store}>
                 <LoadingContainer>
                     <Router>
                         <Home/>
