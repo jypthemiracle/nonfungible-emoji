@@ -395,7 +395,7 @@
                   "name": "now",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 8515,
+                  "referencedDeclaration": 8527,
                   "src": "268:3:12",
                   "typeDescriptions": {
                     "typeIdentifier": "t_uint256",
@@ -2178,7 +2178,7 @@
                       "overloadedDeclarations": [
                         null
                       ],
-                      "referencedDeclaration": 8515,
+                      "referencedDeclaration": 8527,
                       "type": "uint256",
                       "value": "now"
                     },
@@ -3788,7 +3788,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-02-01T10:48:01.968Z",
+  "updatedAt": "2022-02-01T16:25:27.296Z",
   "networkType": "ethereum",
   "devdoc": {
     "methods": {}

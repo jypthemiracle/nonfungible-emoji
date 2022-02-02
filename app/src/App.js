@@ -1,30 +1,34 @@
-import React from "react";
-import { DrizzleContext } from "@drizzle/react-plugin";
-import { Drizzle } from "@drizzle/store";
-import drizzleOptions from "./drizzleOptions";
-import MyComponent from "./MyComponent";
+import React, { Component } from "react";
+import { generateStore } from "@drizzle/store";
+import { DrizzleProvider } from "@drizzle/react-plugin";
+import { LoadingContainer } from "@drizzle/react-components";
+import { BrowserRouter as Router } from "react-router-dom";
+
+import options from "./drizzleOptions";
+import Home from "./home";
+
 import "./App.css";
+// import store from './store';
 
-const drizzle = new Drizzle(drizzleOptions);
+const store = {
+    drizzleOptions: options
+}
 
-const App = () => {
-  return (
-    <DrizzleContext.Provider drizzle={drizzle}>
-      <DrizzleContext.Consumer>
-        {drizzleContext => {
-          const { drizzle, drizzleState, initialized } = drizzleContext;
+const drizzleStore = generateStore(store);
 
-          if (!initialized) {
-            return "Loading..."
-          }
-
-          return (
-            <MyComponent drizzle={drizzle} drizzleState={drizzleState} />
-          )
-        }}
-      </DrizzleContext.Consumer>
-    </DrizzleContext.Provider>
-  );
+class App extends Component {
+    
+    render() {
+        return (
+            <DrizzleProvider options={options} store={drizzleStore}>
+                <LoadingContainer>
+                    <Router>
+                        <Home/>
+                    </Router>
+                </LoadingContainer>
+            </DrizzleProvider>
+        );
+    }
 }
 
 export default App;
