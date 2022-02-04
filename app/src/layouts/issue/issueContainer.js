@@ -1,5 +1,5 @@
 import { drizzleConnect } from "@drizzle/react-plugin";
-import Issue from './issue'
+import Issue from './Issue'
 import { emojiChangeAction } from "../../actions/customAction";
 
 const mapStateToProps = (state) => (
