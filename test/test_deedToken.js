@@ -11,7 +11,6 @@ contract("DeedToken", (accounts) => {
 
     it('correctly checks all the supported interfaces', async() => {
         const instance = await deedToken.deployed();
-        console.log(await instance.supportsInterface);
         const bERC721 = await instance.supportsInterface('0x80ac58cd');
         assert.equal(bERC721, true, "does not support ERC721 standard.");
     })
@@ -21,10 +20,10 @@ contract("DeedToken", (accounts) => {
         const tx = await instance.mint(1, 1, 1);
 
         const eventName = tx.receipt.logs[0].event;
-        const tokenId = tx.receipt.logs[0].args._tokenId;
+        const tokenId = tx.receipt.logs[0].args.tokenId.negative;
 
         assert.equal(eventName, "Transfer", "does not emit proper event");
-        assert.equal(tokenId.toNumber(), 0, "Token ID is wrong. It should start from 0");
+        assert.equal(tokenId, 0, "Token ID is wrong. It should start from 0");
     })
 
     it('correctly mints many NFTs', async() => {
@@ -75,4 +74,9 @@ contract("DeedToken", (accounts) => {
         const tokenId = await instance.tokenByIndex(5);
         assert.equal(tokenId.toNumber(), lastTokenId, "Last token wrong index");
     })
+
+    // it("correctly gets the price of ETHUSD", async() => {
+    //     const instance = await deedToken.deployed();
+    //     assert.equal()
+    // })
 })

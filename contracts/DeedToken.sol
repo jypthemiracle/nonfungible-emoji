@@ -6,13 +6,14 @@ import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 import "./UrlRequest.sol";
+import "../installed_contracts/oraclizeAPI_0.5.sol";
 
-contract DeedToken is IERC721Full {
+contract DeedToken is IERC721Full, usingOraclize {
     
     using SafeMath for uint256;
     using Address for address;
     
-    string public title;
+    uint public ETHUSD;
 
     bytes4 private constant _ERC721_RECEIVED = 0x150b7a02;
 
@@ -27,12 +28,13 @@ contract DeedToken is IERC721Full {
 
     mapping(uint256 => string) tokenURIs;
 
-    address urlRequestAddress;
+    // address urlRequestAddress;
 
     struct asset {
         uint8 x; // face
         uint8 y; // eyes
         uint8 z; // mouth
+        uint ethUSD;
     }
 
     asset[] public allTokens;
@@ -40,16 +42,29 @@ contract DeedToken is IERC721Full {
     // enumeration
     // index to tokenId
     uint256[] public allValidTokenIds;
+    event Log(string text);
     // tokenId to Index
     mapping(uint256 => uint256) private allValidTokenIndex;
 
-    constructor(address _urlRequestAddress) public {
+    constructor() public payable {
 
         owner = msg.sender;
         supportedInterfaces[0x01ffc9a7] = true; //ERC165
         supportedInterfaces[0x80ac58cd] = true; //ERC721
         supportedInterfaces[0x5b5e139f] = true; //ERC721Metadata
-        urlRequestAddress = _urlRequestAddress;
+        // urlRequestAddress = _urlRequestAddress;
+        // OAR = OraclizeAddrResolverI(0x6f485C8BF6fc43eA212E93BBF8ce046C7f1cb475);
+        update();
+    }
+
+    function __callback(bytes32 _myid, string memory _result) public {
+        require(msg.sender == oraclize_cbAddress());
+        emit Log(_result);
+        ETHUSD = parseInt(_result, 2);
+    }
+
+    function update() public payable {
+        oraclize_query("URL","json(https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD).USD");
     }
 
     function supportsInterface(bytes4 interfaceID) external view returns (bool) {
@@ -141,7 +156,7 @@ contract DeedToken is IERC721Full {
     // non-ERC721 standard
     function mint(uint8 _x, uint8 _y, uint8 _z) external payable {
         
-        asset memory newAsset = asset(_x, _y, _z);
+        asset memory newAsset = asset(_x, _y, _z, ETHUSD);
         uint tokenId = allTokens.push(newAsset) - 1;
         tokenOwners[tokenId] = msg.sender;
         balances[msg.sender] = balances[msg.sender].add(1);
@@ -216,11 +231,11 @@ contract DeedToken is IERC721Full {
         return Strings.toString(tokenId);
     }
 
-    function requestTitle(uint256 tokenId) public returns (string memory) {
-        UrlRequest urlRequest = UrlRequest(urlRequestAddress);
-        string memory temp = urlRequest.request();
-        title = string(abi.encodePacked(temp, " ", "tokenId:", Strings.toString(tokenId)));
-        return title;
-    }
+    // function requestTitle(uint256 tokenId) public returns (string memory) {
+    //     UrlRequest urlRequest = UrlRequest(urlRequestAddress);
+    //     string memory temp = urlRequest.request();
+    //     title = string(abi.encodePacked(temp, " ", "tokenId:", Strings.toString(tokenId)));
+    //     return title;
+    // }
 
 }
