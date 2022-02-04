@@ -5,7 +5,9 @@ import { generateContractsInitialState } from '@drizzle/store'
 import drizzleOptions from './drizzleOptions'
 import reducer from './reducer'
 import rootSaga from './rootSaga'
+import { createBrowserHistory } from 'history'
 
+const history = createBrowserHistory();
 const sagaMiddleware = createSagaMiddleware()
 
 const initialState = {
@@ -24,6 +26,6 @@ const store = createStore(
 
 sagaMiddleware.run(rootSaga)
 
-export { store }
+export { history }
 
 export default store

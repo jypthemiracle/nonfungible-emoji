@@ -28,7 +28,7 @@ class MainComponent extends Component {
 
         return (
             <div className="container">
-                <img src={logo} alt="drizzle-logo" />
+                <img src={logo} alt="drizzle-logo" border="0" width="200" height="200"/>
                 <h2>Account</h2>
                 {this.props.accounts[0]}
                 <h2>Balance</h2>

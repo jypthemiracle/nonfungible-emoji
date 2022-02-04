@@ -8,7 +8,7 @@ import drizzleOptions from "./drizzleOptions";
 import Home from "./home";
 
 import "./App.css";
-import store from './store';
+import store, {history} from './store';
 
 class App extends Component {
     
@@ -16,7 +16,7 @@ class App extends Component {
         return (
             <DrizzleProvider options={drizzleOptions} store={store}>
                 <LoadingContainer>
-                    <Router>
+                    <Router history={history}>
                         <Home/>
                     </Router>
                 </LoadingContainer>
