@@ -1,6 +1,6 @@
 import { drizzleConnect } from "@drizzle/react-plugin";
 import MainComponent from "./MainComponent";
-import sayHelloAction from "./actions/customAction"
+import { sayHelloAction } from "./actions/customAction"
 
 const mapStateToProps = (state) => (
     {

@@ -1,8 +1,15 @@
-const sayHelloAction = (params) => (
+export const sayHelloAction = (params) => (
     {
         type: 'SAY_HELLO',
         payload: params
     }
 )
 
-export default sayHelloAction;
+export const emojiChangeAction = (params) => (
+    {
+        type: 'EMOJI_CHANGED',
+        payload: params
+    }
+)
+
+export default { sayHelloAction, emojiChangeAction };
