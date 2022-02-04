@@ -3,9 +3,9 @@ import { drizzleSagas } from '@drizzle/store'
 
 export default function * root() {
 
-    const sagas = [...drizzleSagas.map(saga => fork(saga))];
+    // const sagas = [...drizzleSagas.map(saga => fork(saga))];
 
     yield all(
-        sagas
+        drizzleSagas.map(saga => fork(saga))
     )
 }

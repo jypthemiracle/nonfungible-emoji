@@ -5,7 +5,7 @@ import sayHelloAction from "./actions/customAction"
 const mapStateToProps = (state) => (
     {
         // TODO: why not work?
-        // hello: state.customReducer.sayHello,
+        hello: state.customReducer.sayHello,
         accounts: state.accounts,
         accountBalances: state.accountBalances,
         drizzleStatus: state.drizzleStatus,

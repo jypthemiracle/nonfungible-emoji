@@ -10,12 +10,6 @@ import Home from "./home";
 import "./App.css";
 import store from './store';
 
-// const store = {
-//     drizzleOptions: options
-// }
-
-// const drizzleStore = generateStore(store);
-
 class App extends Component {
     
     render() {

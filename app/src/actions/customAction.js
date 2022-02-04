@@ -4,3 +4,5 @@ const sayHelloAction = (params) => (
         payload: params
     }
 )
+
+export default sayHelloAction;
