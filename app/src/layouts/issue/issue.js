@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Glyphicon } from "react-bootstrap";
+import Asset from "./Asset.js";
 
 import {Grid, Row, Col, Panel, Alert} from 'react-bootstrap';
 
@@ -33,7 +34,7 @@ class Issue extends Component {
             <Grid fluid={true} className="container">
                 <Row>
                     <Col>
-                        
+                        <Asset emoji={this.props.emoji}></Asset>
                     </Col>
                 </Row>
                 <Row>
