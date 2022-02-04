@@ -4,6 +4,7 @@ import MainContainer from './MainContainer';
 import { Link } from 'react-router-dom'
 // import IpfsContainer from "./layouts/ipfs/IpfsContainer";
 import {Issue, Token, Logo} from './images'
+import IssueContainer from './layouts/issue/issueContainer';
 
 
 class Home extends Component {
@@ -14,6 +15,7 @@ class Home extends Component {
                 <Link to={"/issue"}><img src={Issue} border="0" width="200" height="200" className="Menu-Item" alt="issue"></img></Link>
                 <Link to={"/tokens"}><img src={Token} border="0" width="200" height="200" className="Menu-Item" alt="tokens"></img></Link>
                 <Route exact path={"/"} component={MainContainer}/>
+                <Route exact path={"/issue"} component={IssueContainer}/>
             </div>
         );
     }
