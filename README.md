@@ -1,4 +1,8 @@
 # Non-fungible emoji
+### Let's play!
+* https://abit.ly/nonfungible-emoji
+### Contract Address
+* 0xe1d10b16d381edE6B798D0B44A2Ec4c155d9e59A
 ### Features
 * Select Eyes, Mouth and Expression to create your own emojis to each your own taste.
 * Users can publish their own emojis with NFTs on Ethereum's Ropsten Network.
