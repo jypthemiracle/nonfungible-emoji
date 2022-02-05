@@ -26,8 +26,7 @@ class Tokens extends Component {
         const totalSupply = parseInt(await this.deedToken.methods.totalSupply().call());
 
         let items = await [...Array(totalSupply).keys()].reduce(async (acc, cur, idx) => {
-            const prevResult = await acc.then();
-            console.log("idx", idx)
+            const prevResult = acc;
             let t = await this.deedToken.methods.tokenByIndex(idx).call();
             if (await this.deedToken.methods.ownerOf(t).call() === this.props.accounts[0]) {
                 let asset = await this.deedToken.methods.allTokens(t).call();
