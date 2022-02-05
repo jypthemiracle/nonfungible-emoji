@@ -5,6 +5,7 @@ import { Grid } from 'react-bootstrap';
 import '../../css/bootstrap/css/bootstrap.min.css'
 import '../../App.css'
 import getImgSrc from "../../utils/emojiUtils";
+import { TokenList } from "./TokenList";
 
 class Tokens extends Component { 
 
@@ -19,26 +20,29 @@ class Tokens extends Component {
     }
 
     getTokenList = async () => {
-        const totalSupply = await this.deedToken.methods.totalSupply().call();
+        const totalSupply = parseInt(await this.deedToken.methods.totalSupply().call());
+
         let items = await [...Array(totalSupply).keys()].reduce(async (acc, cur, idx) => {
+            const prevResult = await acc.then();
+            console.log("idx", idx)
             let t = await this.deedToken.methods.tokenByIndex(idx).call();
             if (await this.deedToken.methods.ownerOf(t).call() === this.props.accounts[0]) {
                 let asset = await this.deedToken.methods.allTokens(t).call();
-                console.log(asset)
-                acc.push({
+                let now = {
                     f: getImgSrc(asset.x, 'f'),
                     e: getImgSrc(asset.y, 'e'),
                     m: getImgSrc(asset.z, 'm'),
                     tokenId: t
-                });
+                };
+                (await prevResult).push(now);
+                return Promise.resolve(prevResult);
             }
-            return acc
-        }, [])
+        }, Promise.resolve([]))
 
         console.log(items);
 
 
-        // let items;
+        // let items = [];
         // let t;
         // let asset = null;
         // // being instead of using cacheCall, one can use call with async-await pattern in language level
@@ -57,6 +61,7 @@ class Tokens extends Component {
         //     }
         // }
         this.setState({items})
+        return items;
     }
     
     componentDidMount() {
@@ -67,7 +72,7 @@ class Tokens extends Component {
     render() {
         return (
             <Grid fluid={true} className="container">
-                <div>Token List</div>
+                <TokenList items={this.state.items}></TokenList>
             </Grid>
         )
     }

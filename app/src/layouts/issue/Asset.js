@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Image, Glyphicon, Panel } from "react-bootstrap";
 import getImgSrc from "../../utils/emojiUtils";
+import '../../css/bootstrap/css/bootstrap.min.css'
+import '../../App.css'
 
 const Asset = (props) => {
 
