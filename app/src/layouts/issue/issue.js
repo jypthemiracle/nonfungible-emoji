@@ -4,7 +4,7 @@ import { Glyphicon } from "react-bootstrap";
 import Asset from "./Asset.js";
 import { EyeColor, FaceShape, MouthType } from "../../utils/emojiConst";
 
-import { Grid, Row, Col, Panel, Radio, Alert } from 'react-bootstrap';
+import { Grid, Row, Col, Panel, Radio, FormGroup, Button, ButtonGroup, ButtonToolbar, Alert } from 'react-bootstrap';
 
 import '../../css/bootstrap/css/bootstrap.min.css';
 
@@ -32,6 +32,29 @@ class Issue extends Component {
                     onChange={this.handleOptionClick}
                     checked={emoji === e.value}
                 >{e.name}</Radio>
+    }
+
+    handleCreateClick = () => {
+        let _length = Object.keys(this.emoji).length;
+        
+        for (let m in this.emoji) {
+            if (this.emoji[m] === null || undefined) {
+                _length -= 1;
+            }
+        }
+
+        if (_length < 1) {
+            return;
+        }
+
+        const {f, e, m} = this.emoji;
+        let x; let y; let z;
+        f != null ? (x = f) : (x = 0);
+        e != null ? (y = e) : (y = 0);
+        m != null ? (z = m) : (z = 0);
+
+        // contract call
+        this.deedToken.methods.mint.cacheSend(x, y, z);
     }
 
     render() {
@@ -62,6 +85,16 @@ class Issue extends Component {
                                 <br/>
                                 {mouth}
                             </Panel.Body>
+                            <ButtonToolbar>
+                                <ButtonGroup justified>
+                                    <Button href="#" bsStyle="primary" bsSize="large" onClick={this.handleCreateClick}>
+                                        Create
+                                    </Button>
+                                    <Button href="#" bsStyle="primary" bsSize="large" onClick={this.handleResetClick}>
+                                        Reset
+                                    </Button>
+                                </ButtonGroup>
+                            </ButtonToolbar>
                         </Panel>
                     </Col>
                 </Row>
