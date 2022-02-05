@@ -75,6 +75,12 @@
   height: auto;
 }
 
+.ethUSD-desc {
+  position: relative;
+  left: 150px;
+  top: 50px;
+}
+
 .Token-desc {
   position: absolute;
   left: 150px;

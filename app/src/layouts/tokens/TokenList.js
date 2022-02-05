@@ -21,6 +21,9 @@ export function TokenList(props) {
                             <Image src={e.f} className="Emoji-img"></Image>
                             <Image src={e.e} className="Emoji-img"></Image>
                             <Image src={e.m} className="Emoji-img"></Image>
+                            <p className="ethUSD-desc">
+                                ETHUSD Price when minting the NFT: {e.ETHUSD}
+                            </p>
                             <p className="Token-desc">
                                 Token ID: EMJ - {e.tokenId}
                             </p>
@@ -50,7 +53,7 @@ export function TokenList(props) {
 
     if (tokenList.length === 0) {
         tokenList = <Alert bsStyle="warning">
-            <strong>You have no token!!! Please mint your own NFT!!!</strong>
+            <strong>Please wait for seconds to load the data. If you have not minted your NFT yet, please do it and try again.</strong>
         </Alert>
     }
 

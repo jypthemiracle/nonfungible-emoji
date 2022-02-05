@@ -59,6 +59,7 @@ class Tokens extends Component {
                     f: getImgSrc(asset.x, 'f'),
                     e: getImgSrc(asset.y, 'e'),
                     m: getImgSrc(asset.z, 'm'),
+                    ETHUSD: asset.ethUSD.slice(0, 4) + '.' + asset.ethUSD.slice(4, 6),
                     tokenId: t
                 });
             }
@@ -75,6 +76,7 @@ class Tokens extends Component {
         this.deedToken.events.Transfer().on("data", (event) => {
             this.getTokenList(event)
         })
+        console.log(this.deedToken.methods.update.cacheSend())
     }
 
     handleTransfer = (e) => {
