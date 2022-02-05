@@ -11,6 +11,23 @@ class SendToken extends Component {
         this.deedToken = this.contracts.DeedToken;
     }
 
+    handleSubmit = () => {
+        const tokenId = this.props.tokenId;
+        const buttonType = this.props.buttonType;
+        const from = this.state.accounts[0];
+        const to = this.toAddress.value;
+
+        if (buttonType === 'T') { // transferFrom
+            this.deedToken.methods.transferFrom.cacheSend(from, to, tokenId);
+            return;
+        }
+        if (buttonType === 'A') {
+            this.deedToken.methods.approve.cacheSend(from, to);
+            return;
+        }
+        return;
+    }
+
     render () {
         if (this.props.flag) {
             console.log("FLAGGGGG", this.props.flag)

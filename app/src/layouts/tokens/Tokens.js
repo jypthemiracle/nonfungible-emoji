@@ -67,13 +67,22 @@ class Tokens extends Component {
         return items;
     }
     
-    componentDidMount() {
+    async componentDidMount() {
         console.log(this.deedToken);
-        this.getTokenList();
+        await this.getTokenList();
+
+        // event listening
+        this.deedToken.events.Transfer().on("data", (event) => {
+            this.getTokenList(event)
+        })
     }
 
     handleTransfer = (e) => {
         this.showInputAddress(e.target.id, 'T');
+    }
+
+    handleApprove = (e) => {
+        this.showInputAddress(e.target.id, 'A');
     }
 
     showInputAddress = (tokenId, buttonType) => {
@@ -106,7 +115,8 @@ class Tokens extends Component {
                     flag={this.state.flag} 
                     tokenId={this.state.tokenId} 
                     buttonType={this.state.buttonType} 
-                    handleTransfer={this.handleTransfer} 
+                    handleTransfer={this.handleTransfer}
+                    handleApprove={this.handleApprove} 
                     handleBurn={this.handleBurn}>
                 </TokenList>
             </Grid>
