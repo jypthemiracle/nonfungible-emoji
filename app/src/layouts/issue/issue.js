@@ -17,8 +17,11 @@ class Issue extends Component {
         this.deedToken = this.contracts.DeedToken;
     }
 
-    handleOptionClick = () => {
-        //
+    handleOptionClick = (e) => {
+        let obj = {};
+        obj[e.target.name] = e.target.value;
+        this.emoji = {...this.emoji, ...obj};
+        this.props.onEmojiChange(this.emoji);
     }
 
     //     this.dataKey = this.deedToken.methods.totalSupply.cacheCall();
@@ -39,7 +42,7 @@ class Issue extends Component {
         const face = FaceShape.map(f => {
             return <Radio value={f.value} 
             checked={this.props.emoji.f === f.value}
-            onChange={this.handleOptionClick()} name="f" key={f.value} inline={true} >{f.name}
+            onChange={this.handleOptionClick} name="f" key={f.value} inline={true} >{f.name}
             </Radio>
         })
 
