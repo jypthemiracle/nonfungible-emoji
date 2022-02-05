@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { Alert, Col, Image, Panel, Row } from "react-bootstrap";
+import { Button, ButtonGroup, ButtonToolbar } from "react-bootstrap";
 import { Glyphicon } from "react-bootstrap";
+import SendToken from "./SendToken";
 
 export function TokenList(props) {
     let tokenList = props.items.map(e => (
@@ -25,6 +27,21 @@ export function TokenList(props) {
                         </div>
                     </Panel.Body>
                     <Panel.Footer>
+                        <SendToken flag={props.flag && props.tokenId === e.tokenId} 
+                            tokenId={props.tokenId} 
+                            buttonType={props.buttonType}>
+                        </SendToken>
+                        <ButtonGroup justified>
+                            <Button href="#" bsStyle="primary" onClick={props.handleTransfer} id={e.tokenId}>
+                                Transfer
+                            </Button>
+                            <Button href="#" bsStyle="info" onClick={props.handleApprove} id={e.tokenId}>
+                                Allow
+                            </Button>
+                            <Button href="#" bsStyle="danger" onClick={props.handleBurn} id={e.tokenId}>
+                                Burn
+                            </Button>
+                        </ButtonGroup>
                     </Panel.Footer>
                 </Panel>
             </Col>

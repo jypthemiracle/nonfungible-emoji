@@ -10,7 +10,10 @@ import { TokenList } from "./TokenList";
 class Tokens extends Component { 
 
     state = {
-        items: []
+        items: [],
+        flag: false,
+        tokenId: null,
+        buttonType: null
     }
     
     constructor(props, context) {
@@ -69,10 +72,43 @@ class Tokens extends Component {
         this.getTokenList();
     }
 
+    handleTransfer = (e) => {
+        this.showInputAddress(e.target.id, 'T');
+    }
+
+    showInputAddress = (tokenId, buttonType) => {
+        if (!this.state.flag) {
+            this.setState({
+                flag: true,
+                tokenId,
+                buttonType
+            })
+            return;
+        }
+        this.setState({
+            flag: false,
+            tokenId,
+            buttonType
+        })
+        return;
+    }
+
+    handleBurn = (e) => {
+        console.log('YEAH', e.target);
+        const tokenId = e.target.id;
+        this.deedToken.methods.burn.cacheSend(tokenId);
+    }
+
     render() {
         return (
             <Grid fluid={true} className="container">
-                <TokenList items={this.state.items}></TokenList>
+                <TokenList items={this.state.items} 
+                    flag={this.state.flag} 
+                    tokenId={this.state.tokenId} 
+                    buttonType={this.state.buttonType} 
+                    handleTransfer={this.handleTransfer} 
+                    handleBurn={this.handleBurn}>
+                </TokenList>
             </Grid>
         )
     }
