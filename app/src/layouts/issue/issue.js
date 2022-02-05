@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Glyphicon } from "react-bootstrap";
 import Asset from "./Asset.js";
-import { FaceShape } from "../../utils/emojiConst";
+import { EyeColor, FaceShape, MouthType } from "../../utils/emojiConst";
 
 import { Grid, Row, Col, Panel, Radio, Alert } from 'react-bootstrap';
 
@@ -24,27 +24,21 @@ class Issue extends Component {
         this.props.onEmojiChange(this.emoji);
     }
 
-    //     this.dataKey = this.deedToken.methods.totalSupply.cacheCall();
-    // componentDidMount = () => {
-    // }
-
-    // handleClick = () => {
-    //     this.totalSupply = this.props.DeedToken.totalSupply[this.dataKey].value;
-    // }
-
-    // handleSayHello = () => {
-    //     this.props.onClickSayHello(this.input.value);
-
-    // }
+    mapOptions = (e, name, emoji) => {
+        return <Radio key={e.value} 
+                    name={name} 
+                    value={e.value} 
+                    inline={true} 
+                    onChange={this.handleOptionClick}
+                    checked={emoji === e.value}
+                >{e.name}</Radio>
+    }
 
     render() {
 
-        const face = FaceShape.map(f => {
-            return <Radio value={f.value} 
-            checked={this.props.emoji.f === f.value}
-            onChange={this.handleOptionClick} name="f" key={f.value} inline={true} >{f.name}
-            </Radio>
-        })
+        const face = FaceShape.map(f => this.mapOptions(f, 'f', this.props.emoji.f));
+        const eye = EyeColor.map(e => this.mapOptions(e, 'e', this.props.emoji.e));
+        const mouth = MouthType.map(m => this.mapOptions(m, 'm', this.props.emoji.m));
 
         return (
             <Grid fluid={true} className="container">
@@ -63,6 +57,10 @@ class Issue extends Component {
                             </Panel.Heading>
                             <Panel.Body className="custom-align-center">
                                 {face}
+                                <br/>
+                                {eye}
+                                <br/>
+                                {mouth}
                             </Panel.Body>
                         </Panel>
                     </Col>

@@ -6,7 +6,6 @@ import getImgSrc from "../../utils/emojiUtils";
 const Asset = (props) => {
 
     const faceImg = getImgSrc(props.emoji.f, 'f');
-    console.log(props.emoji)
 
     const eyeImg = getImgSrc(props.emoji.e, 'e');
 

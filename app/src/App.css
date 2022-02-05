@@ -1,10 +1,88 @@
 .App {
   text-align: center;
   margin: 2rem;
+  font-family: 'Open Sans', sans-serif;
 }
+
+
 
 .section {
   text-align: left;
   max-width: 720px;
   margin: 4rem auto auto;
+}
+
+/* LoadingContainer */
+.container {
+  box-sizing: border-box;
+  width: calc(100% - 60px);
+  max-width: 720px;
+  padding: 45px 20px;
+  margin: 0 auto;
+}
+
+/*
+.section input[type="number"] {
+  border-color: #0c1a2b;
+  display: inline-block;
+}
+*/
+
+
+/* custom style */
+.Menu-header {
+  background-color: #222;
+  height: 60px;
+  padding: 10px;
+  color: darkblue;
+  align-content: center;
+}
+
+.Menu-item {
+  height: 40px;
+  margin-right: 30px;
+}
+
+.Menu-sub-item {
+  font-size: medium;
+  font-weight: bold;
+}
+
+.Login-item {
+  height: 40px;
+  margin-right: 20px;
+  float: right;
+}
+
+.App-logo {
+  height: 40px;
+  margin-right: 40px;
+}
+
+.Emoji-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100px;
+  width: 100px;
+}
+
+.Ipfs-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: auto;
+}
+
+.Token-desc {
+  position: absolute;
+  left: 150px;
+}
+
+/* IPFS image view */
+.img-view {
+  height:25%;
+  width:25%;
+  padding: 5px 40px 20px 10px; /* TOP RIGHT LEFT BOTTOM*/
 }
