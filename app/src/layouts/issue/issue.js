@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Glyphicon } from "react-bootstrap";
 import Asset from "./Asset.js";
+import { FaceShape } from "../../utils/emojiConst";
 
-import {Grid, Row, Col, Panel, Alert} from 'react-bootstrap';
+import { Grid, Row, Col, Panel, Radio, Alert } from 'react-bootstrap';
 
 import '../../css/bootstrap/css/bootstrap.min.css';
 
@@ -16,6 +17,10 @@ class Issue extends Component {
         this.deedToken = this.contracts.DeedToken;
     }
 
+    handleOptionClick = () => {
+        //
+    }
+
     //     this.dataKey = this.deedToken.methods.totalSupply.cacheCall();
     // componentDidMount = () => {
     // }
@@ -26,10 +31,18 @@ class Issue extends Component {
 
     // handleSayHello = () => {
     //     this.props.onClickSayHello(this.input.value);
-    
+
     // }
 
-    render () {
+    render() {
+
+        const face = FaceShape.map(f => {
+            return <Radio value={f.value} 
+            checked={this.props.emoji.f === f.value}
+            onChange={this.handleOptionClick()} name="f" key={f.value} inline={true} >{f.name}
+            </Radio>
+        })
+
         return (
             <Grid fluid={true} className="container">
                 <Row>
@@ -46,6 +59,7 @@ class Issue extends Component {
                                 </Panel.Title>
                             </Panel.Heading>
                             <Panel.Body className="custom-align-center">
+                                {face}
                             </Panel.Body>
                         </Panel>
                     </Col>
