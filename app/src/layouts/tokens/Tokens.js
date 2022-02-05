@@ -23,45 +23,46 @@ class Tokens extends Component {
     }
 
     getTokenList = async () => {
-        const totalSupply = parseInt(await this.deedToken.methods.totalSupply().call());
-
-        let items = await [...Array(totalSupply).keys()].reduce(async (acc, cur, idx) => {
-            const prevResult = acc;
-            let t = await this.deedToken.methods.tokenByIndex(idx).call();
-            if (await this.deedToken.methods.ownerOf(t).call() === this.props.accounts[0]) {
-                let asset = await this.deedToken.methods.allTokens(t).call();
-                let now = {
-                    f: getImgSrc(asset.x, 'f'),
-                    e: getImgSrc(asset.y, 'e'),
-                    m: getImgSrc(asset.z, 'm'),
-                    tokenId: t
-                };
-                (await prevResult).push(now);
-                return Promise.resolve(prevResult);
-            }
-        }, Promise.resolve([]))
-
-        console.log(items);
-
-
-        // let items = [];
-        // let t;
-        // let asset = null;
-        // // being instead of using cacheCall, one can use call with async-await pattern in language level
-        // const totalSupply = await this.deedToken.methods.totalSupply().call();
-        // for (let j = 0; j < totalSupply; j++) {
-        //     t = await this.deedToken.methods.tokenByIndex(j).call();
+        // TODO: why not undefined?
+        // const totalSupply = parseInt(await this.deedToken.methods.totalSupply().call());
+        // let items = await [...Array(totalSupply).keys()].reduce(async (acc, cur, idx) => {
+        //     const prevResult = await acc.then();
+        //     console.log("idx", idx)
+        //     let t = await this.deedToken.methods.tokenByIndex(idx).call();
         //     if (await this.deedToken.methods.ownerOf(t).call() === this.props.accounts[0]) {
-        //         asset = await this.deedToken.methods.allTokens(t).call();
-        //         console.log(asset)
-        //         items.push({
+        //         let asset = await this.deedToken.methods.allTokens(t).call();
+        //         let now = {
         //             f: getImgSrc(asset.x, 'f'),
         //             e: getImgSrc(asset.y, 'e'),
         //             m: getImgSrc(asset.z, 'm'),
         //             tokenId: t
-        //         });
+        //         };
+        //         (await prevResult).push(now);
+        //         return Promise.resolve(prevResult);
         //     }
-        // }
+        // }, Promise.resolve([]))
+
+        // console.log(items);
+
+
+        let items = [];
+        let t;
+        let asset = null;
+        // being instead of using cacheCall, one can use call with async-await pattern in language level
+        const totalSupply = await this.deedToken.methods.totalSupply().call();
+        for (let j = 0; j < totalSupply; j++) {
+            t = await this.deedToken.methods.tokenByIndex(j).call();
+            if (await this.deedToken.methods.ownerOf(t).call() === this.props.accounts[0]) {
+                asset = await this.deedToken.methods.allTokens(t).call();
+                console.log(asset)
+                items.push({
+                    f: getImgSrc(asset.x, 'f'),
+                    e: getImgSrc(asset.y, 'e'),
+                    m: getImgSrc(asset.z, 'm'),
+                    tokenId: t
+                });
+            }
+        }
         this.setState({items})
         return items;
     }
